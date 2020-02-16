@@ -5,9 +5,9 @@
 # Lee Drake, 16 February 2020
 
 ###Check for existing versions of packages, and install if necessary
-list.of.packages <- c("lubridate", "bbmle", "plotrix", "grid", "shinythemes")
-new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
-if(length(new.packages)) lapply(new.packages, function(x) install.packages(x, repos="http://cran.rstudio.com/", dep = TRUE))
+#list.of.packages <- c("lubridate", "bbmle", "plotrix", "grid", "shinythemes")
+#new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+#if(length(new.packages)) lapply(new.packages, function(x) install.packages(x, repos="http://cran.rstudio.com/", dep = TRUE))
 
 layOut = function(...) {
     
