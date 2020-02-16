@@ -1,10 +1,6 @@
 # Estimating case fatality ratio (CFR) of COVID-19
 # Christian L. Althaus, 15 February 2020
 
-###Check for existing versions of packages, and install if necessary
-list.of.packages <- c("lubridate", "bbmle", "plotrix")
-new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
-if(length(new.packages)) lapply(new.packages, function(x) install.packages(x, repos="http://cran.rstudio.com/", dep = TRUE))
 
 # Load libraries
 library(lubridate)
@@ -44,32 +40,7 @@ nll <- function(cfr, death_shape, death_rate) {
 # Analyze all data sets of observed COVID-19 cases outside China
 # Source: WHO, ECDC and international media
 files <- list.files("data", pattern = ".csv")
-estimates <- as.data.frame(matrix(NA, nrow = length(files), ncol = 4))
-names(estimates) <- c("date", "mle", "lower", "upper")
-for(i in 1:length(files)) {
-    # Prepare data
-    file_date <- ymd(substr(files[i], 12, 19))
-    exports <- read.csv(paste0("data/", files[i]))
-    begin <- ymd(exports$date[1])
-    cases <- exports$cases
-    deaths <- exports$deaths
-    n_cases <- sum(cases)
-    n_deaths <- sum(deaths)
-    n_days <- length(cases)
-    days <- 1:n_days
-    interval <- seq(1, n_days + 7, 7)
-    onset <- rep(days, cases)
-    
-    # Fit the model
-    free <- c(cfr = 0)
-    fixed <- c(death_shape = exp(coef(fit_linton)[[1]]), death_rate = exp(coef(fit_linton)[[2]]))
-    fit <- mle2(nll, start = as.list(free), fixed = as.list(fixed), method = "Brent", lower = -100, upper = 100)
-    
-    # Write estimates
-    estimates[i, 1] <- as_date(file_date)
-    estimates[i, 2] <- plogis(coef(fit)[1])
-    estimates[i, 3:4] <- plogis(confint(fit))
-}
+
 
 # Save estimates
 estimates$date <- as_date(estimates$date)
