@@ -1,3 +1,5 @@
+# This is a shiny adaptation of [this app](https://github.com/calthaus/ncov-cfr). Origional app notes are below
+
 # Estimating case fatality ratio of COVID-19 from observed cases outside China
 
 *Updated report: 16 February 2020*
