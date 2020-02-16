@@ -62,8 +62,13 @@ nll <- function(cfr, death_shape, death_rate, n_days) {
 
 # Analyze all data sets of observed COVID-19 cases outside China
 # Source: WHO, ECDC and international media
-file.path.list <- list.files("data", pattern = ".csv")
-file.list <- lapply(file.path.list, function(x) read.csv(paste0("data/", x)))
+library(httr)
+req <- GET("https://api.github.com/repos/calthaus/ncov-cfr/git/trees/master?recursive=1")
+stop_for_status(req)
+filelist <- unlist(lapply(content(req)$tree, "[", "path"), use.names = F)
+the.files <- grep("data/", filelist, value = TRUE, fixed = TRUE)[grepl("ncov_cases", grep("data/", filelist, value = TRUE, fixed = TRUE))]
+file.list <- lapply(the.files, function(x) read.csv(paste0("https://raw.githubusercontent.com/calthaus/ncov-cfr/master/", x)))
+
 test.files <- do.call(rbind, file.list)
 
 
